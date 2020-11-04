@@ -1,4 +1,3 @@
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
 var packageBody,ground;
 var log1,log2,log3;
 const Engine = Matter.Engine;
@@ -6,24 +5,17 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 
-function preload()
-{
-	helicopterIMG=loadImage("helicopter.png")
-	packageIMG=loadImage("package.png")
-}
+
 
 function setup() {
 	createCanvas(800, 700);
 	rectMode(CENTER);
 	
 
-	packageSprite=createSprite(width/2, 80, 10,10);
-	packageSprite.addImage(packageIMG)
-	packageSprite.scale=0.2
+	packageSprite=createSprite(100, 200, 10,10);
+	packageSprite.scale=2
 
-	helicopterSprite=createSprite(width/2, 200, 10,10);
-	helicopterSprite.addImage(helicopterIMG)
-	helicopterSprite.scale=0.6
+
 
 	groundSprite=createSprite(width/2, height-35, width,10);
 	groundSprite.shapeColor=color(255)
@@ -41,9 +33,10 @@ function setup() {
 	engine = Engine.create();
 	world = engine.world;
 	var option1 = {
-		'restitution':0.5,
-		'density':1.0,
-		'friction':1.0
+		isStatic:false,
+		'restitution':0.3,
+		'density':1.2,
+		'friction':0.5
 	}
 	var option2 = {
 		isStatic: true,
@@ -53,7 +46,7 @@ function setup() {
 		
 	}
 
-	packageBody = Bodies.circle(width/2 , 200 , 5 , option1);
+	packageBody = Bodies.circle(100 , 600 , 5 , option1);
 	World.add(world, packageBody);
 	
 
@@ -62,15 +55,16 @@ function setup() {
 	 World.add(world, ground);
 	 
 
-	 log1 = Bodies.rectangle(400,600,200,40,option2)
+	 log1 = Bodies.rectangle(600,600,200,40,option2)
 	 World.add(world,log1)
 
-	 log2 = Bodies.rectangle(300,555,40,100,option2)
+	 log2 = Bodies.rectangle(500,555,40,100,option2)
 	 World.add(world,log2)
 
-	 log3 = Bodies.rectangle(500,555,40,100,option2)
+	 log3 = Bodies.rectangle(700,555,40,100,option2)
 	 World.add(world,log3)
 
+	 
 	 
 	Engine.run(engine);
   
@@ -94,17 +88,14 @@ function draw() {
 
   log3Sprite.x= log3.position.x 
   log3Sprite.y= log3.position.y 
-  
+   keyPressed();
   drawSprites();
- keyPressed();
+
 }
 
 function keyPressed() {
- if (keyCode === DOWN_ARROW) {
-    // Look at the hints in the document and understand how to make the package body fall only on
-	//packageSprite=createSprite(width/2, 80, 10,10);
-	packageSprite.addImage(packageIMG)
-	packageSprite.scale=0.2
+ if (keyCode === UP_ARROW) {
 
+	Matter.Body.applyForce(packageBody.body,packageBody.body,{x:85,y:85})
   }
 }
